@@ -179,7 +179,7 @@ const handleQuery = async (req, res, query) => {
             },
             include: {
                 category: true,
-                images: true
+                // images: true
             }
 
         })
@@ -201,7 +201,7 @@ const handlePrice = async (req, res, priceRange) => {
             },
             include: {
                 category: true,
-                images: true
+                // images: true
             }
         })
         res.send(products)
@@ -222,7 +222,7 @@ const handleCategory = async (req, res, categoryId) => {
             },
             include: {
                 category: true,
-                images: true
+                // images: true
             }
         })
         res.send(products)
@@ -250,7 +250,7 @@ exports.searchFilters = async (req, res) => {
             await handlePrice(req, res, price)
         }
 
-        // res.send('Hello searchFilters Product')
+        res.send('Hello searchFilters Product')
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Server error" })

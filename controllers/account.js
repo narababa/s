@@ -6,13 +6,14 @@ exports.read = async (req, res) => {
         // code
         const { id } = req.params
         const accounts = await prisma.User.findFirst({
-            where: {
-                id: Number(id)
-            },
-            // include: {
-            //     // category: true,
-            //     images: true
-            // }
+            where: { id: Number(id) },
+            select: {
+                email: true,
+                enabled: true,
+                name: true,
+                picture: true,
+                role: true,
+            }
         })
         res.send(accounts)
     } catch (err) {
@@ -20,6 +21,8 @@ exports.read = async (req, res) => {
         res.status(500).json({ message: "Server error" })
     }
 }
+
+
 exports.update = async (req, res) => {
     try {
         // code
@@ -43,40 +46,49 @@ exports.update = async (req, res) => {
                 role: role,
             }
         })
-        res.send(account)
+        res.send('Update Success')
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Server error" })
     }
 }
+
 exports.remove = async (req, res) => {
     try {
         const { id } = req.params
         const account = await prisma.User.findFirst({
             where: { id: Number(id) },
         })
+        console.log(account)
         if (!account) {
-            return res.status(400).json({ message: 'account not found!!' })
+            return res.status(400).json({ message: 'Product not found!!' })
         }
-        const deletedImage = account.picture
+        const deletedImage = User.picture
+        const idna = account.id
         const image = await prisma.Images.findFirst({
             where: { name: deletedImage },
         })
                 if (!image) {
-            return res.status(400).json({ message: 'image not found!!' })
+                    await prisma.User.delete({
+                        where: {
+                            id: Number(idna)
+                        }
+                    })
+                  return res.send('image not found!!')
         }
         await prisma.Images.delete({
             where: {
                 id: Number(image.id)
             }
         })
+        // Step 3 ลบสินค้า
         await prisma.User.delete({
             where: {
-                id: Number(id)
+                id: Number(idna)
             }
         })
 
-        res.send('Deleted Success')
+       return res.send('Deleted Success')
     } catch (err) {
         console.log(err)
         res.status(500).json({ message: "Server error" })

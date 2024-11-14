@@ -1,33 +1,33 @@
 const prisma = require("../config/prisma")
 
 
-exports.create = async(req,res)=>{
-    const { name } = req.file
-        try{
-            console.log(name)
-            //code
-            // const images = await prisma.images.create({
-            //     data:{
-            //         name: name,
-            //         data: data,
-            //         type: type
-            //     }
-            // })
-            // res.send(images)
-            // console.log(image)
-        }catch(err){
-            console.log(err)
-            res.status(500).json({ message : "Server error" })
-        }
+// exports.create = async(req,res)=>{
+//     const { name } = req.file
+//         try{
+//             console.log(name)
+//             //code
+//             // const images = await prisma.images.create({
+//             //     data:{
+//             //         name: name,
+//             //         data: data,
+//             //         type: type
+//             //     }
+//             // })
+//             // res.send(images)
+//             // console.log(image)
+//         }catch(err){
+//             console.log(err)
+//             res.status(500).json({ message : "Server error" })
+//         }
 
-}
+// }
 
 exports.read = async (req, res) => {
     try {
         const { name } = req.params
         const images = await prisma.images.findFirst({
             where: {
-                name: `${name}`
+                name: name
             }
         })
         res.contentType('image/png');
